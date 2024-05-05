@@ -1,0 +1,8 @@
+.idea/
+.vscode/
+node_modules/
+build/
+tmp/
+temp/
+storage/*
+extension/pngconverter/node_modules/
