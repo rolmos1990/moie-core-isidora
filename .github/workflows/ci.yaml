@@ -1,0 +1,24 @@
+name: Continuous Integration
+
+on: [pull_request]
+
+jobs:
+  deploy:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    env:
+      SOURCE_DIR: "build/"
+      CI: false
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.x
+      - run: git config --global url."https://".insteadOf git://
+      - run: yarn
+      - run: REACT_APP_ENV=production yarn build
