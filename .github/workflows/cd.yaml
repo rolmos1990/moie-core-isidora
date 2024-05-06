@@ -4,13 +4,13 @@ name: Continuous Deployment
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     strategy:
       matrix:
         node-version: [14.x]
