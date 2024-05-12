@@ -15,9 +15,9 @@ Steps to run this project:
 
 ## DOCKER UPLOAD
 
-    docker build -t rolmos/moie-lucy-api .
-    docker tag {TAG_VERSION} rolmos/moie-lucy-api
-    docker push rolmos/moie-lucy-api
+    docker build -t rolmos/moie-isidora-api .
+    docker tag {TAG_VERSION} rolmos/moie-isidora-api
+    docker push rolmos/moie-isidora-api
 
 
 #RUN ON SERVER
