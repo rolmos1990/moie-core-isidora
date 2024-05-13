@@ -1,4 +1,4 @@
-# Awesome Project Build with TypeORM (moie2)
+# Awesome Project Build with TypeORM (moie2 )
 
 Steps to run this project:
 
@@ -25,7 +25,7 @@ Steps to run this project:
 
    docker run -e PORT=18211 \
    -e HOST=http://localhost \
-   -e DB_HOST=3.85.198.54 \
+   -e DB_HOST=100.25.183.88 \
    -e DB_PORT=3306 \
    -e DB_USERNAME=root \
    -e DB_DATABASE=moie-lucy-v2 \
@@ -36,3 +36,7 @@ Steps to run this project:
    -e PUBLIC_URL=http://localhost:18211 \
    --name moie-lucy-api \
    -dp 18211:18211 rolmos/moie-lucy-api
+
+
+COMPOSE_DEBUG=1 APP_VERSION=0.1-3c30aea NEW_RELIC_LICENSE_KEY="" NEW_RELIC_APP_NAME="" WEBSITE_URL=lucymodas.com PORT=18211 HOST=http://localhost DB_HOST=100.25.183.88 DB_PORT=3306 DB_USERNAME=root DB_DATABASE=moie-lucy-v2 DB_PASSWORD=Panama2018. SEED_DB=false DIAN_USER=1CCC171F7911107313 DIAN_PASSWORD=1CCC171F7911107313 PUBLIC_URL=http://localhost:18211 docker-compose up -d
+
