@@ -1,6 +1,5 @@
 upstream backend {
   server api:5000;
-  server api2:5001;
 }
 
 server {
