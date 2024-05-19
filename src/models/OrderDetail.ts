@@ -18,7 +18,7 @@ import {string_to_hex} from "../common/helper/helpers";
  * El isImpress -> o Impreso seria un Estatus más,
  *
  */
-@Entity({name: 'OrderDetail'})
+@Entity({name: 'orderdetail'})
 export class OrderDetail extends BaseModel{
 
     @PrimaryGeneratedColumn('increment')

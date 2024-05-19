@@ -13,7 +13,7 @@ import {State} from "./State";
 import {TemporalAddress} from "./TemporalAddress";
 import {Order} from "./Order";
 
-@Entity({name: 'Customer'})
+@Entity({name: 'customer'})
 export class Customer extends BaseModel{
     @PrimaryGeneratedColumn('increment')
     id: number;

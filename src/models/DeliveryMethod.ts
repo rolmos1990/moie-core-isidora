@@ -16,7 +16,7 @@ export enum DeliveryEnum {
 
 export type DeliveryTypes = DeliveryTypes.PREVIOUS_PAYMENT | DeliveryTypes.PAY_ONLY_DELIVERY | DeliveryTypes.CHARGE_ON_DELIVERY;
 
-@Entity({name: 'DeliveryMethod'})
+@Entity({name: 'deliverymethod'})
 export class DeliveryMethod extends BaseModel{
     @PrimaryGeneratedColumn('increment')
     id: number;

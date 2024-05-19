@@ -8,7 +8,7 @@ import {IsDate, IsDecimal} from "class-validator";
 import {Type} from "class-transformer";
 import {User} from "./User";
 
-@Entity({name: 'Items'})
+@Entity({name: 'items'})
 export class Items extends BaseModel {
     @PrimaryGeneratedColumn('increment')
     id: number;

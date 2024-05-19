@@ -8,7 +8,7 @@ import {IsDate, IsDecimal, Length} from "class-validator";
 import {Type} from "class-transformer";
 import {Movement} from "./Movement";
 
-@Entity({name: 'Attachment'})
+@Entity({name: 'attachment'})
 export class Attachment extends BaseModel {
     @PrimaryGeneratedColumn('increment')
     id: number;

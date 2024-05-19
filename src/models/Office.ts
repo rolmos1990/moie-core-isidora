@@ -8,7 +8,7 @@ import {ViewOfficeOrders} from "./ViewOfficeOrders";
 import {ProductAvailable} from "./ProductAvailable";
 
 //Equivalente a (despachos)
-@Entity({name: 'Office'})
+@Entity({name: 'office'})
 export class Office extends BaseModel{
 
     @PrimaryGeneratedColumn('increment')

@@ -3,7 +3,7 @@ import BaseModel from "../common/repositories/base.model";
 import {IsBoolean, IsDate, IsInt, Length} from "class-validator";
 import {Type} from "class-transformer";
 
-@Entity({name: 'BillConfig'})
+@Entity({name: 'billconfig'})
 export class BillConfig extends BaseModel{
     @PrimaryGeneratedColumn('increment')
     id: number;

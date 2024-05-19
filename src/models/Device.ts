@@ -3,7 +3,7 @@ import BaseModel from "../common/repositories/base.model";
 import {IsBoolean, IsDate, Length} from "class-validator";
 import {Type} from "class-transformer";
 
-@Entity({name: 'Device'})
+@Entity({name: 'device'})
 export class Device extends BaseModel{
 
     @PrimaryGeneratedColumn('increment')

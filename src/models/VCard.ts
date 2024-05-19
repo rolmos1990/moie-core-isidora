@@ -3,7 +3,7 @@ import BaseModel from "../common/repositories/base.model";
 import {IsDate, Length} from "class-validator";
 import {Type} from "class-transformer";
 
-@Entity({name: 'VCard'})
+@Entity({name: 'vcard'})
 export class VCard extends BaseModel{
 
     @PrimaryGeneratedColumn('increment')

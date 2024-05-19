@@ -13,7 +13,7 @@ import { Notification } from "./Notification";
 import {SecurityRol} from "./SecurityRol";
 import {Office} from "./Office";
 
-@Entity({name: 'User'})
+@Entity({name: 'user'})
 export class User extends BaseModel{
     @PrimaryGeneratedColumn('increment')
     id: number;

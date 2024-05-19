@@ -7,7 +7,7 @@ import BaseModel from "../common/repositories/base.model";
 import {IsBoolean, IsDate, Length, MinLength} from "class-validator";
 import {Type} from "class-transformer";
 
-@Entity({name: 'Template'})
+@Entity({name: 'template'})
 export class Template extends BaseModel{
     @PrimaryGeneratedColumn('increment')
     id: number;

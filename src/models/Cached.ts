@@ -7,7 +7,7 @@ import BaseModel from "../common/repositories/base.model";
 import {Type} from "class-transformer";
 import {IsDate} from "class-validator";
 
-@Entity({name: 'Cached'})
+@Entity({name: 'cached'})
 export class Cached extends BaseModel {
 
     @PrimaryGeneratedColumn('increment')

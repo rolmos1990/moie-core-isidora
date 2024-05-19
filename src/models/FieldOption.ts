@@ -5,7 +5,7 @@ import {Length} from "class-validator";
 /* replaza opcion */
 /* Tags para diferentes objetos, puede ser usado como un atributo adicional */
 
-@Entity({name: 'FieldOption'})
+@Entity({name: 'fieldoption'})
 export class FieldOption extends BaseModel{
     @PrimaryGeneratedColumn('increment')
     id: number;

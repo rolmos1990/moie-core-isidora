@@ -29,7 +29,7 @@ import {Comment} from "./Comment";
  * El isImpress -> o Impreso seria un Estatus más,
  *
  */
-@Entity({name: 'Order'})
+@Entity({name: 'order'})
 export class Order extends BaseModel{
 
     @PrimaryGeneratedColumn('increment')

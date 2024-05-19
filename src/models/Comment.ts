@@ -8,7 +8,7 @@ import {IsDate, Length} from "class-validator";
 import {Type} from "class-transformer";
 import {User} from "./User";
 
-@Entity({name: 'Comment'})
+@Entity({name: 'comment'})
 export class Comment extends BaseModel{
     @PrimaryGeneratedColumn('increment')
     id: number;

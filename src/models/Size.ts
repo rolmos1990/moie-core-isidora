@@ -3,7 +3,7 @@ import BaseModel from "../common/repositories/base.model";
 import {IsBoolean, IsNumber, Length} from "class-validator";
 
 //Equivalente a (talla)
-@Entity({name: 'Size'})
+@Entity({name: 'size'})
 export class Size extends BaseModel{
 
     @PrimaryGeneratedColumn('increment')

@@ -13,7 +13,7 @@ import {Order} from "./Order";
 import {BillConfig} from "./BillConfig";
 import {BillCreditMemo} from "./BillCreditMemo";
 
-@Entity({name: 'Bill'})
+@Entity({name: 'bill'})
 export class Bill extends BaseModel{
     @PrimaryGeneratedColumn('increment')
     id: number;

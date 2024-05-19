@@ -7,7 +7,7 @@ import BaseModel from "../common/repositories/base.model";
 import {Product} from "./Product";
 
 @ViewEntity({
-    name: 'ProductAvailableView',
+    name: 'productavailablevsiew',
     expression: `
         SELECT id,
                (Select SUM(quantity)

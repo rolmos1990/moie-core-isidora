@@ -7,7 +7,7 @@ networks:
 
 services:
   api:
-    image: 'rolmos/moie-lucy-api:${APP_VERSION}'
+    image: 'rolmos/moie-lucy-api-isidora:${APP_VERSION}'
     command: 'npm run start'
     volumes:
       - /var/storage:/storage/

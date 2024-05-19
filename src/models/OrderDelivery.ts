@@ -5,7 +5,7 @@ import {Order} from "./Order";
 import {DeliveryLocality} from "./DeliveryLocality";
 import {Type} from "class-transformer";
 
-@Entity({name: 'OrderDelivery'})
+@Entity({name: 'orderdelivery'})
 export class OrderDelivery extends BaseModel{
 
     @PrimaryGeneratedColumn('increment')

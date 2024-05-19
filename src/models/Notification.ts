@@ -9,7 +9,7 @@ import {State} from "./State";
 import {User} from "./User";
 import {Type} from "class-transformer";
 
-@Entity({name: 'Notification'})
+@Entity({name: 'notification'})
 export class Notification extends BaseModel{
     @PrimaryGeneratedColumn('increment')
     id: number;

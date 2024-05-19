@@ -5,7 +5,7 @@ import {Type} from "class-transformer";
 import {Order} from "./Order";
 import {User} from "./User";
 
-@Entity({name: 'OrderHistoric'})
+@Entity({name: 'orderhistoric'})
 export class OrderHistoric extends BaseModel{
 
     @PrimaryGeneratedColumn('increment')

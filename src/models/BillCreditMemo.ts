@@ -11,7 +11,7 @@ import {IsBoolean, IsDate, Length} from "class-validator";
 import {Type} from "class-transformer";
 import {Bill} from "./Bill";
 
-@Entity({name: 'BillCreditMemo'})
+@Entity({name: 'billcreditmemo'})
 export class BillCreditMemo extends BaseModel{
     @PrimaryGeneratedColumn('increment')
     id: number;

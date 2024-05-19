@@ -17,7 +17,7 @@ import {ProductImage} from "./ProductImage";
 import {ProductAvailable} from "./ProductAvailable";
 import {ViewAvailables} from "./ViewAvailables";
 
-@Entity({name: 'Product'})
+@Entity({name: 'product'})
 export class Product extends BaseModel{
 
     @PrimaryGeneratedColumn('increment')
