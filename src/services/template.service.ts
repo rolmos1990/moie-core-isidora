@@ -231,7 +231,7 @@ export class TemplateService extends BaseService<Template> {
 
             const axios = require('axios');
 
-            await axios.post('http://moie.lucymodas.com:5007/', {
+            await axios.post('http://moie-core.isidoramodas.com:5007/', {
                html: _html,
                name: fileName
             });
