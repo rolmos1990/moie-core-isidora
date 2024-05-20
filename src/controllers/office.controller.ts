@@ -14,7 +14,8 @@ import {OrderConditional} from "../common/enum/order.conditional";
 import {OrderService} from "../services/order.service";
 import {Order} from "../models/Order";
 import {MEDIA_FORMAT_OUTPUT, MediaManagementService} from "../services/mediaManagement.service";
-import {ExportersInterrapidisimoCd} from "../templates/exporters";
+//import {ExportersInterrapidisimoCd} from "../templates/exporters";
+
 import {ImporterImpl} from "../templates/importers/importerImpl";
 import {LIMIT_SAVE_BATCH} from "../common/persistence/mysql.persistence";
 import {OrderDeliveryService} from "../services/orderDelivery.service";
@@ -34,6 +35,7 @@ import {ExportersServientregaCd} from "../templates/exporters/exporters-servient
 import {ItemsService} from "../services/items.service";
 import {EventItems} from "../models/EventItems";
 import {ItemType} from "../common/enum/itemsTypes";
+import {ExportersBlueexpressCd} from "../templates/exporters/exporters-blueexpress-cd";
 
 @route('/office')
 export class OfficeController extends BaseController<Office> {
@@ -256,10 +258,11 @@ export class OfficeController extends BaseController<Office> {
             const office: Office = await this.officeService.find(parseInt(id), ['deliveryMethod']);
             const orders: Order[] = await this.orderService.findByObject({office: office}, ['customer', 'customer.municipality', 'orderDelivery', 'orderDelivery.deliveryLocality', 'deliveryMethod']); //TODO -- Agregar orderDelivery.deliveryLocality'
 
-            let exportable = new ExportersInterrapidisimoCd();
-
+            let exportable = null;
             if(office.deliveryMethod.code === 'SERVIENTREGA'){
                 exportable = new ExportersServientregaCd();
+            } else if(office.deliveryMethod.code === 'BLUEEXPRESS'){
+                exportable = new ExportersBlueexpressCd();
             }
 
             const base64File = await this.mediaManagementService.createExcel(exportable, orders, res, MEDIA_FORMAT_OUTPUT.b64);

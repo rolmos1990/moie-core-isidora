@@ -1,11 +1,11 @@
 import {BaseExporters} from "./base.exporters";
 import {Order} from "../../models/Order";
-import {EXPORTER_INTERRAPIDISIMO_CD} from "./constants";
+import {EXPORTER_BLUEEEXPRESS_CD, EXPORTER_INTERRAPIDISIMO_CD} from "./constants";
 import {SingleBaseExporters} from "./single.base.exporters";
 import {formatPrice} from "../../common/helper/helpers";
 import {toUpper} from "./utilities";
 
-export class ExportersInterrapidisimoCd extends SingleBaseExporters {
+export class ExportersBlueexpressCd extends SingleBaseExporters {
 
     getSheetName(): String {
         return "Worksheet";
@@ -25,25 +25,6 @@ export class ExportersInterrapidisimoCd extends SingleBaseExporters {
     }
 
     getBody(data: Order[]) {
-
-        const preFormat = (item, objects) => {
-
-            let name = "";
-            let lastname = "";
-            if(item.customer && item.customer.name) {
-
-                const _fullname = item.customer.name;
-
-                const index = _fullname.indexOf(" ");
-                const firstname = _fullname.substr(0, index);
-                const secondname = _fullname.substr(index + 1);
-
-                name = toUpper(firstname);
-                lastname = toUpper(secondname);
-            }
-
-            return {...objects, name, lastname};
-        }
 
         const body = data.map(item => ({
             blank: '',
@@ -83,12 +64,12 @@ export class ExportersInterrapidisimoCd extends SingleBaseExporters {
             { header: 'Tiene Seguro Adicional', key: 'blank'},
             { header: 'Valor declarado', key: 'blank'},
             { header: 'Centro de costo', key: 'blank'}
-        ];
+        ];;
         return headers;
     }
 
     getName() {
-        return EXPORTER_INTERRAPIDISIMO_CD;
+        return EXPORTER_BLUEEEXPRESS_CD;
     }
 
 }
