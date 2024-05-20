@@ -55,7 +55,7 @@ export class ExportersBlueexpressCd extends SingleBaseExporters {
             { header: 'Email', key: 'email'},
             { header: 'Código Interno Cliente', key: 'blank'},
             { header: 'Cantidad de Piezas', key: 'qty'},
-            { header: 'Cantidad de unidades', key: 'city'},
+            { header: 'Cantidad de unidades', key: 'blank'},
             { header: 'Peso físico', key: 'weight'},
             { header: 'Observación', key: 'blank'},
             { header: 'N° de Referencia 1', key: 'orderId'},
