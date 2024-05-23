@@ -13,7 +13,7 @@ Steps to run this project:
     SET SQL_MODE = '';
 
 
-## DOCKER UPLOAD
+## DOCKER UPLOAD .
 
     docker build -t rolmos/moie-isidora-api .
     docker tag {TAG_VERSION} rolmos/moie-isidora-api
