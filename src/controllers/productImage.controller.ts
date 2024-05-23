@@ -61,9 +61,9 @@ export class ProductImageController extends BaseController<ProductImage> {
 
         for(let i=0;i<allProducts.length;i++)
         {
-            const templateNumber = (i % 5) + 1;
+           // const templateNumber = (i % 5) + 1;
             //console.log('id: ', allProducts[i]['id'], templateNumber);
-            await this.productService.createCatalogForProduct(allProducts[i]['id'], templateNumber);
+            await this.productService.createCatalogForProduct(allProducts[i]['id']);
         }
 
         return res.json({status: 200});
