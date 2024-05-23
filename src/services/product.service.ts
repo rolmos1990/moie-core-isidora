@@ -145,7 +145,7 @@ export class ProductService extends BaseService<Product> {
                 text: "Hay " + parseInt(getRandomArbitrary(5,20)) + " personas viendo este producto",
                 text2: "Se ha vendido " + parseInt(getRandomArbitrary(5,20)) + " veces en las últimas 24 horas",
                 text3: "Este producto está muy solicitado",
-                host: 'http://moie.isidoramodas.com:5000'
+                host: 'http://moie-core.isidoramodas.com'
             };
 
             console.log('catalogInfo: ', catalogInfo);
