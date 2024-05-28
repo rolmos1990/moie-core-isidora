@@ -38,7 +38,7 @@ export class ExportersBlueexpressCd extends SingleBaseExporters {
             weight: this.getConverter(item.totalWeight),
             orderId: '#' + item.id,
             hasCod: 'S',
-            price: formatPriceWithoutDecimals(item.totalAmount),
+            price: Math.floor(item.totalAmount),
         }));
 
         return body;
