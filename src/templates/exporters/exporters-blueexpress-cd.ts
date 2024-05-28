@@ -2,7 +2,7 @@ import {BaseExporters} from "./base.exporters";
 import {Order} from "../../models/Order";
 import {EXPORTER_BLUEEEXPRESS_CD, EXPORTER_INTERRAPIDISIMO_CD} from "./constants";
 import {SingleBaseExporters} from "./single.base.exporters";
-import {formatPrice} from "../../common/helper/helpers";
+import {formatPrice, formatPriceWithoutDecimals} from "../../common/helper/helpers";
 import {toUpper} from "./utilities";
 
 export class ExportersBlueexpressCd extends SingleBaseExporters {
@@ -38,7 +38,7 @@ export class ExportersBlueexpressCd extends SingleBaseExporters {
             weight: this.getConverter(item.totalWeight),
             orderId: '#' + item.id,
             hasCod: 'S',
-            price: formatPrice(item.totalAmount),
+            price: formatPriceWithoutDecimals(item.totalAmount),
         }));
 
         return body;
@@ -59,6 +59,13 @@ export class ExportersBlueexpressCd extends SingleBaseExporters {
             { header: 'Peso físico', key: 'weight'},
             { header: 'Observación', key: 'blank'},
             { header: 'N° de Referencia 1', key: 'orderId'},
+            { header: 'N° de Referencia 2', key: 'blank'},
+            { header: 'N° de Referencia 3', key: 'blank'},
+            { header: 'N° de Referencia 4', key: 'blank'},
+            { header: 'Documento de Devolución N°1', key: 'blank'},
+            { header: 'Documento de Devolución N°2', key: 'blank'},
+            { header: 'Documento de Devolución N°3', key: 'blank'},
+            { header: 'Documento de Devolución N°4', key: 'blank'},
             { header: 'Tiene Cobro contra Entrega', key: 'hasCod'},
             { header: 'Valor a cobrar contra entrega', key: 'price'},
             { header: 'Tiene Seguro Adicional', key: 'blank'},
