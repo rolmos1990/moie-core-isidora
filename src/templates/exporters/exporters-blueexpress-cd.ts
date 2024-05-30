@@ -38,6 +38,8 @@ export class ExportersBlueexpressCd extends SingleBaseExporters {
             weight: this.getConverter(item.totalWeight),
             orderId: '#' + item.id,
             hasCod: 'S',
+            w_10: 10,
+            w_20: 20,
             price: Math.floor(item.totalAmount),
         }));
 
@@ -54,9 +56,12 @@ export class ExportersBlueexpressCd extends SingleBaseExporters {
             { header: 'Celular', key: 'phone'},
             { header: 'Email', key: 'email'},
             { header: 'Código Interno Cliente', key: 'blank'},
-            { header: 'Cantidad de Piezas', key: 'qty'},
+            { header: 'Cantidad de piezas', key: 'qty'},
             { header: 'Cantidad de unidades', key: 'blank'},
             { header: 'Peso físico', key: 'weight'},
+            { header: 'Largo', key: 'w_10'},
+            { header: 'Alto', key: 'w_10'},
+            { header: 'Ancho', key: 'w_20'},
             { header: 'Observación', key: 'blank'},
             { header: 'N° de Referencia 1', key: 'orderId'},
             { header: 'N° de Referencia 2', key: 'blank'},
@@ -68,10 +73,11 @@ export class ExportersBlueexpressCd extends SingleBaseExporters {
             { header: 'Documento de Devolución N°4', key: 'blank'},
             { header: 'Tiene Cobro contra Entrega', key: 'hasCod'},
             { header: 'Valor a cobrar contra entrega', key: 'price'},
+            { header: 'Es mercancia peligrosa', key: 'blank'},
             { header: 'Tiene Seguro Adicional', key: 'blank'},
             { header: 'Valor declarado', key: 'blank'},
             { header: 'Centro de costo', key: 'blank'}
-        ];;
+        ];
         return headers;
     }
 
