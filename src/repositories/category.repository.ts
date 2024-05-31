@@ -11,10 +11,10 @@ export class CategoryRepository<T> extends BaseRepository<Category>{
     }
 
     async resetOrderCategory(categoryId){
-        await this.repositoryManager.manager.query('INSERT INTO ORDER_PRODUCTS (`KEY`,`PRODUCT_ID`) SELECT null, id FROM product where category_id = '+categoryId+' order by orden');
-        await this.repositoryManager.manager.query('UPDATE product INNER JOIN ORDER_PRODUCTS AS P on PRODUCT_ID = id SET orden = P.KEY where category_id = '+categoryId);
-        await this.repositoryManager.manager.query('DELETE FROM ORDER_PRODUCTS');
-        await this.repositoryManager.manager.query('TRUNCATE ORDER_PRODUCTS');
+        await this.repositoryManager.manager.query('INSERT INTO order_products (`KEY`,`PRODUCT_ID`) SELECT null, id FROM product where category_id = '+categoryId+' order by orden');
+        await this.repositoryManager.manager.query('UPDATE product INNER JOIN order_products AS P on PRODUCT_ID = id SET orden = P.KEY where category_id = '+categoryId);
+        await this.repositoryManager.manager.query('DELETE FROM order_products');
+        await this.repositoryManager.manager.query('TRUNCATE order_products');
     }
 
     //obtener piezas no publiciadas
