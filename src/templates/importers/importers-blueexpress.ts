@@ -1,6 +1,6 @@
 import {BaseImporters} from "./base.impoters";
 import {InvalidFileException} from "../../common/exceptions";
-import {IMPORTER_INTERRAPIDISIMO} from "./constants";
+import {IMPORTER_BLUEEXPRESS, IMPORTER_INTERRAPIDISIMO} from "./constants";
 
 
 export class ImportersBlueexpress extends BaseImporters {
@@ -42,7 +42,7 @@ export class ImportersBlueexpress extends BaseImporters {
     }
 
     getName() {
-        return IMPORTER_INTERRAPIDISIMO;
+        return IMPORTER_BLUEEXPRESS;
     }
 
     hasFiles() {
