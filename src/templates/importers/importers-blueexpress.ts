@@ -24,10 +24,9 @@ export class ImportersBlueexpress extends BaseImporters {
                     //const deliveryAmount = item.getCell(positionDeliveryAmountId).toString();
                     const deliveryAmount = "0";
                     let id : any = item.getCell(positionOrderId).toString();
-                    id = id.replace(/#/g, '');
-                    if(id && id[1]) {
-                        id = id[1].replace(/ /g, '');
-                        this.collection.push({id, trackingNumber,deliveryAmount});
+                    if(id != null && id!= ""){
+                        id = id.replace(/#/g, '');
+                        this.collection.push({id, trackingNumber, deliveryAmount});
                     }
                 });
             }catch(e){

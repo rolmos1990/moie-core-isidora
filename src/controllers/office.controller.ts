@@ -384,7 +384,6 @@ export class OfficeController extends BaseController<Office> {
 
             return res.json({status: 200, data: {registers: registers} } );
         }catch(e){
-            console.log("error -- ", e.message);
             if (e.name === InvalidArgumentException.name || e.name === "EntityNotFound") {
                 this.handleException(new InvalidArgumentException("Despacho no ha sido encontrado"), res);
             } else{

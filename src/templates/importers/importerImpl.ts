@@ -11,6 +11,7 @@ export class ImporterImpl extends BaseImporters{
     private importer : BaseImporters;
     constructor(deliveryMethod : string, ws : Worksheet){
         super();
+        console.log(deliveryMethod);
         switch(deliveryMethod){
             case IMPORTER_INTERRAPIDISIMO:
                 this.importer = new ImportersInterrapidisimo();
