@@ -58,4 +58,18 @@ export class Bill extends BaseModel{
         return false;
     }
 
+    newBill(order: Order, log: string){
+        const bill = new Bill();
+        bill.createdAt = new Date();
+        bill.status = 'Enviada';
+        bill.legalNumber = 1;
+        bill.tax = 19;
+        bill.order = order;
+        bill.creditMemo = null;
+        bill.dianCreditMemoLog = "";
+        bill.dianLog = log;
+
+        return bill;
+    }
+
 }

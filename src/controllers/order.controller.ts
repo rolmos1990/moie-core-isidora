@@ -45,6 +45,9 @@ import {converterArrayToProductsObject} from "../common/helper/converters";
 import {Operator} from "../common/enum/operators";
 import {Comment} from "../models/Comment";
 import {OrderTypes} from "../common/enum/orderTypes";
+import {BillService} from "../services/bill.service";
+import {FieldOption} from "../models/FieldOption";
+import {FieldOptionService} from "../services/fieldOption.service";
 
 
 @route('/order')
@@ -59,7 +62,9 @@ export class OrderController extends BaseController<Order> {
         private readonly mediaManagementService: MediaManagementService,
         private readonly commentService: CommentService,
         private readonly orderHistoricService: OrderHistoricService,
-        private readonly orderDeliveryService: OrderDeliveryService
+        private readonly orderDeliveryService: OrderDeliveryService,
+        private readonly billService: BillService,
+        private readonly fieldOptionService: FieldOptionService
     ){
         super(orderService, userService);
     };
@@ -479,7 +484,7 @@ export class OrderController extends BaseController<Order> {
                 throw new InvalidArgumentException("Debe ingresar registros a conciliar");
             }
 
-            const orders = await this.orderService.findByIds(ids);
+            const orders = await this.orderService.findByIdsWithFullRelationsAndMunicipality(ids);
 
             let itemSuccess = [];
             let itemFailures = [];
@@ -487,6 +492,13 @@ export class OrderController extends BaseController<Order> {
             const user = await this.getUser(req);
 
             const _previousPayments = [DeliveryTypes.PREVIOUS_PAYMENT, DeliveryTypes.PAY_ONLY_DELIVERY];
+
+            const settings = await this.fieldOptionService.findByGroup('BILLING_SETTINGS');
+            const settingsArgs = JSON.parse(settings[0].value);
+
+            console.log('settingsArgs: ', settingsArgs);
+
+
             await Promise.all(orders.map(async order => {
 
                 const isMensajeroChargeOnDelivery = order.orderDelivery.deliveryType == DeliveryTypes.CHARGE_ON_DELIVERY && order.deliveryMethod.id === MENSAJERO;
@@ -495,6 +507,7 @@ export class OrderController extends BaseController<Order> {
                 if(isMensajeroChargeOnDelivery || isInterrapidisimoChargeOnDelivery){
                     try {
                         await this.orderService.updateNextStatus(order, user);
+                        await this.billService.createBill(order, settingsArgs);
                         itemSuccess.push(order.id);
                     }catch(e){
                         itemFailures.push(order.id);
@@ -502,6 +515,7 @@ export class OrderController extends BaseController<Order> {
                 } else if(order.deliveryMethod.id === INTERRAPIDISIMO && _previousPayments.indexOf(order.orderDelivery.deliveryType)){
                     try {
                         await this.orderService.updateNextStatus(order, user);
+                        await this.billService.createBill(order, settingsArgs);
                         itemSuccess.push(order.id);
                     }catch(e){
                         itemFailures.push(order.id);
@@ -509,6 +523,7 @@ export class OrderController extends BaseController<Order> {
                 } else {
                     try {
                         await this.orderService.updateNextStatus(order, user);
+                        await this.billService.createBill(order, settingsArgs);
                         itemSuccess.push(order.id);
                     }catch(e){
                         itemFailures.push(order.id);

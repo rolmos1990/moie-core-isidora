@@ -17,6 +17,8 @@ import {BillCreditMemoRepository} from "../repositories/billCreditMemo.repositor
 import {InvalidMunicipalityException} from "../common/exceptions/invalidMunicipality.exception";
 import {InvalidDocumentException} from "../common/exceptions/invalidDocument.exception";
 import {Between} from "typeorm";
+import {BillingCreateImpl} from "../common/requesters/billing/billingCreateImpl";
+import {OrderDetail} from "../models/OrderDetail";
 
 
 export class BillService extends BaseService<Bill> {
@@ -224,5 +226,21 @@ export class BillService extends BaseService<Bill> {
 
         return bills;
 
+    }
+
+    async createBill(order: Order, settings : any){
+            //Solameent es creada si esta en orden conciliada
+            if(order.isFinished()){
+            const billBuilder = new BillingCreateImpl();
+
+            const orderDetails: OrderDetail[] = await this.orderService.getDetails(order);
+            order.orderDetails = orderDetails;
+
+            const resultBody = await billBuilder.Prepare(order, settings)
+                .Call();
+
+            const bill = new Bill().newBill(order, JSON.stringify(resultBody));
+            await this.billRepository.save(bill);
+        }
     }
 }
