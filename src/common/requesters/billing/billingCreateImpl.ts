@@ -75,7 +75,7 @@ export class BillingCreateImpl {
 
     getHeaders() : any {
         return {
-            'access_token': '02e5b9ff90b441fa41ee679d35f0349da3009c15'
+            'access_token': this.settings["access_token"]
         };
     }
 
