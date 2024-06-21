@@ -11,10 +11,6 @@ export class BillingCreateImpl {
     constructor() {
     }
 
-    getUrl(): any {
-        return this.settings['api'];
-    }
-
     Prepare(order: Order, settings: any): any {
         this.order = order;
         this.settings = settings;
@@ -49,6 +45,8 @@ export class BillingCreateImpl {
 
         try {
 
+        console.log('this.settings: ', this.settings);
+
         const detailsForBillings = items.map(handlerBillingDetail);
 
         const body =  {
@@ -61,26 +59,21 @@ export class BillingCreateImpl {
             'details': [...detailsForBillings]
         };
 
-        const url = this.getUrl();
-        const headers = this.getHeaders();
+        const url = this.settings['api'];
+
+        const headers = {
+            'access_token': this.settings["access_token"]
+        };
+
         response = await axios.post(url, body, {headers});
         var responseString = response['data'];
         return responseString;
         }catch(e){
+            console.log('e.message', e.message);
             response = {error: (e.response  && e.response.statusText) ? e.response.statusText : e.message};
             return response;
         }
 
-    }
-
-    getHeaders() : any {
-        return {
-            'access_token': this.settings["access_token"]
-        };
-    }
-
-    getBody() : any {
-        return null;
     }
 
 }
