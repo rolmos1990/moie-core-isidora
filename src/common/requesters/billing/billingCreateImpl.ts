@@ -21,9 +21,9 @@ export class BillingCreateImpl {
 
         const items = this.order.orderDetails;
 
-        function handlerBillingDetail(orderDetail: OrderDetail) {
+        function handlerBillingDetail(orderDetail: OrderDetail, settings: any) {
 
-            const tax_amount = this.settings['tax'];
+            const tax_amount = settings['tax'];
             const price_without_tax = orderDetail.product.price / (1 + tax_amount);
 
             const payload = {
@@ -31,8 +31,8 @@ export class BillingCreateImpl {
                 "discount": parseFloat(orderDetail.discountPercent.toString()),
                 "quantity": orderDetail.quantity,
                 "taxes": [{
-                    "code": this.settings["code"],
-                    "percentage": this.settings["taxPercentage"]
+                    "code": settings["code"],
+                    "percentage": settings["taxPercentage"]
                 }],
                 "sku": orderDetail.product.id.toString(),
                 "comment": orderDetail.product.name
@@ -44,13 +44,11 @@ export class BillingCreateImpl {
         let response = {};
 
         try {
-
-        console.log('this.settings: ', this.settings);
-
-        const detailsForBillings = items.map(handlerBillingDetail);
+        var settings = this.settings;
+        const detailsForBillings = items.map((orderDetail) => handlerBillingDetail(orderDetail, settings));
 
         const body =  {
-            'documentTypeId': this.settings["documentTypeId"],
+            'documentTypeId': settings["documentTypeId"],
             'emissionDate': 1686094800,
             'municipality': this.order.customer.municipality.name,
             'city': this.order.customer.state.name,
@@ -59,10 +57,10 @@ export class BillingCreateImpl {
             'details': [...detailsForBillings]
         };
 
-        const url = this.settings['api'];
+        const url = settings['api'];
 
         const headers = {
-            'access_token': this.settings["access_token"]
+            'access_token': settings["access_token"]
         };
 
         response = await axios.post(url, body, {headers});
