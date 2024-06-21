@@ -49,7 +49,7 @@ export class BillingCreateImpl {
 
         const body =  {
             'documentTypeId': settings["documentTypeId"],
-            'emissionDate': 1686094800,
+            'emissionDate': moment().unix(),
             'municipality': this.order.customer.municipality.name,
             'city': this.order.customer.state.name,
             'address': this.order.customer.municipality.name,
