@@ -109,7 +109,7 @@ export class BillController extends BaseController<Bill> {
             const settings = await this.fieldOptionService.findByGroup('BILLING_SETTINGS');
             const settingsArgs = JSON.parse(settings[0].value);
 
-            await this.billService.createBill(bill.order, settingsArgs);
+            await this.billService.createBill(bill.order, settingsArgs, bill);
 
         }catch(e){
             bill.status = BillStatus.ERROR

@@ -228,7 +228,7 @@ export class BillService extends BaseService<Bill> {
 
     }
 
-    async createBill(order: Order, settings : any){
+    async createBill(order: Order, settings : any, bill : Bill = null){
             //Solameent es creada si esta en orden conciliada
             if(order.isFinished()){
             const billBuilder = new BillingCreateImpl();
@@ -239,7 +239,14 @@ export class BillService extends BaseService<Bill> {
             const resultBody = await billBuilder.Prepare(order, settings)
                 .Call();
 
-            const bill = new Bill().newBill(order, JSON.stringify(resultBody), resultBody.status == 1 ? 'Enviada' : 'Error');
+
+            if(!bill) {
+                bill = new Bill().newBill(order, JSON.stringify(resultBody), resultBody.status == 1 ? 'Enviada' : 'Error');
+            } else {
+                bill.status = resultBody.status == 1 ? 'Enviada' : 'Error';
+                bill.dianLog = JSON.stringify(resultBody);
+            }
+
             return await this.billRepository.save(bill);
         }
     }
