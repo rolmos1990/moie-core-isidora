@@ -79,9 +79,20 @@ export class BillingCreateImpl {
         return {request: body, response: responseString, status: 1};
 
         }catch(e){
-            console.log('e.message', e.message);
-            response = {error: (e.response  && e.response.statusText) ? e.response.statusText : e.message};
-            return {request: body, response, status: 0};
+            let errorMessage = "";
+            if (e.response) {
+                // El servidor respondió con un código de estado fuera del rango de 2xx
+                errorMessage = `Error: ${e.response.status} - ${e.response.statusText}`;
+                if (e.response.data && typeof e.response.data === 'object') {
+                    errorMessage = e.response.data;
+                }
+            } else if (e.request) {
+                errorMessage = 'No se recibió respuesta del servidor';
+            } else {
+                errorMessage = `Error: ${e.message}`;
+            }
+            response = { error: errorMessage };
+            return { request: body, response, status: 0 };
         }
 
     }
