@@ -58,10 +58,10 @@ export class Bill extends BaseModel{
         return false;
     }
 
-    newBill(order: Order, log: string){
+    newBill(order: Order, log: string, status){
         const bill = new Bill();
         bill.createdAt = new Date();
-        bill.status = 'Enviada';
+        bill.status = status;
         bill.legalNumber = 1;
         bill.tax = 19;
         bill.order = order;

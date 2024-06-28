@@ -239,8 +239,8 @@ export class BillService extends BaseService<Bill> {
             const resultBody = await billBuilder.Prepare(order, settings)
                 .Call();
 
-            const bill = new Bill().newBill(order, JSON.stringify(resultBody));
-            await this.billRepository.save(bill);
+            const bill = new Bill().newBill(order, JSON.stringify(resultBody), resultBody.status == 1 ? 'Enviada' : 'Error');
+            return await this.billRepository.save(bill);
         }
     }
 }

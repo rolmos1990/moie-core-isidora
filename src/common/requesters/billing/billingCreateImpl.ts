@@ -43,20 +43,29 @@ export class BillingCreateImpl {
 
         let response = {};
 
-        try {
         var settings = this.settings;
-        const detailsForBillings = items.map((orderDetail) => handlerBillingDetail(orderDetail, settings));
+
+        let detailsForBillings = [];
+        try {
+            detailsForBillings = items.map((orderDetail) => handlerBillingDetail(orderDetail, settings));
+        }catch(e){
+            console.log("error on get details");
+        }
+
+        const order = this.order || {customer: {document: null, state: {name: null}, municipality: {name: null}}};
+        const customer = order.customer;
 
         const body =  {
             'documentTypeId': settings["documentTypeId"],
             'emissionDate': moment().unix(),
-            'municipality': this.order.customer.municipality.name,
-            'city': this.order.customer.state.name,
-            'address': this.order.customer.municipality.name,
-            'clientCode': this.order.customer.document,
+            'municipality': customer.municipality.name,
+            'city': customer.state.name,
+            'address': customer.municipality.name,
+            'clientCode': customer.document,
             'details': [...detailsForBillings]
         };
 
+        try {
         const url = settings['api'];
 
         const headers = {
@@ -64,12 +73,15 @@ export class BillingCreateImpl {
         };
 
         response = await axios.post(url, body, {headers});
+
         var responseString = response['data'];
-        return responseString;
+
+        return {request: body, response: responseString, status: 1};
+
         }catch(e){
             console.log('e.message', e.message);
             response = {error: (e.response  && e.response.statusText) ? e.response.statusText : e.message};
-            return response;
+            return {request: body, response, status: 0};
         }
 
     }
