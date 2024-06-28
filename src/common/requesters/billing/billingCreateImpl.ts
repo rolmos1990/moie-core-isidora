@@ -3,6 +3,7 @@ import {Order} from "../../../models/Order";
 import moment = require("moment");
 import {OrderDetail} from "../../../models/OrderDetail";
 import axios from "axios";
+import {OrderDelivery} from "../../../models/OrderDelivery";
 
 export class BillingCreateImpl {
 
@@ -21,7 +22,7 @@ export class BillingCreateImpl {
 
         const items = this.order.orderDetails;
 
-        function handlerBillingDetail(orderDetail: OrderDetail, settings: any) {
+        function handlerBillingDetail(order: Order, orderDetail: OrderDetail, settings: any) {
 
             const tax_amount = settings['tax'];
             const price_without_tax = orderDetail.product.price / (1 + tax_amount);
@@ -35,7 +36,27 @@ export class BillingCreateImpl {
                     "percentage": settings["taxPercentage"]
                 }],
                 "sku": orderDetail.product.id.toString(),
-                "comment": orderDetail.product.name
+                "comment": orderDetail.product.name + ' - ' + order.id
+            };
+
+            return payload;
+        }
+
+        function getDelivery(orderDelivery: OrderDelivery, settings: any){
+
+            const tax_amount = settings['tax'];
+            const price_without_tax = orderDelivery.deliveryCost / (1 + tax_amount);
+
+            const payload = {
+                "netUnitValue": parseFloat(price_without_tax.toFixed(2)),
+                "discount": 0,
+                "quantity": 1,
+                "taxes": [{
+                    "code": settings["code"],
+                    "percentage": settings["taxPercentage"]
+                }],
+                "sku": '0001',
+                "comment": 'Envio'
             };
 
             return payload;
@@ -45,14 +66,16 @@ export class BillingCreateImpl {
 
         var settings = this.settings;
 
+        const order = this.order;
+        const orderDelivery = this.order.orderDelivery;
+
         let detailsForBillings = [];
         try {
-            detailsForBillings = items.map((orderDetail) => handlerBillingDetail(orderDetail, settings));
+            detailsForBillings = items.map((orderDetail) => handlerBillingDetail(order, orderDetail, settings));
         }catch(e){
             console.log("error on get details");
         }
 
-        const order = this.order || {customer: {document: null, state: {name: null}, municipality: {name: null}}};
         const customer = order.customer;
 
         const body =  {
@@ -62,7 +85,7 @@ export class BillingCreateImpl {
             'city': customer.state.name,
             'address': customer.municipality.name,
             'clientCode': customer.document,
-            'details': [...detailsForBillings]
+            'details': [...detailsForBillings, getDelivery(orderDelivery, settings)]
         };
 
         try {
