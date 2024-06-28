@@ -16,6 +16,7 @@ import {MEDIA_FORMAT_OUTPUT, MediaManagementService} from "../services/mediaMana
 import {ElectronicBillAdaptor} from "../templates/adaptors/ElectronicBillAdaptor";
 import {ExpotersEletronicBill} from "../templates/exporters/electronic-bill";
 import {BillCreditMemo} from "../models/BillCreditMemo";
+import {FieldOptionService} from "../services/fieldOption.service";
 
 const moment = require("moment");
 
@@ -24,7 +25,8 @@ export class BillController extends BaseController<Bill> {
     constructor(
         private readonly billService: BillService,
         private readonly orderService: OrderService,
-        private readonly mediaManagementService: MediaManagementService
+        private readonly mediaManagementService: MediaManagementService,
+        private readonly fieldOptionService: FieldOptionService
     ){
         super(billService);
     };
@@ -103,20 +105,14 @@ export class BillController extends BaseController<Bill> {
         const id = req.params.id;
         const bill = await this.billService.findBill(id);
         try {
-            await this.billService.sendElectronicBill(bill, EBillType.INVOICE, false);
-            bill.status = BillStatus.SEND;
-            await this.billService.createOrUpdate(bill);
+
+            const settings = await this.fieldOptionService.findByGroup('BILLING_SETTINGS');
+            const settingsArgs = JSON.parse(settings[0].value);
+
+            await this.billService.createBill(bill.order, settingsArgs);
+
         }catch(e){
-
-            if(e instanceof InvalidMunicipalityException){
-                bill.status = BillStatus.NO_MUNICIPALITY
-            }
-            else if(e instanceof InvalidDocumentException){
-                bill.status = BillStatus.NO_IDENTITY
-            } else {
-                bill.status = BillStatus.ERROR
-            }
-
+            bill.status = BillStatus.ERROR
             await this.billService.createOrUpdate(bill);
         }
 
