@@ -16,7 +16,8 @@ import {DeliveryTypes} from "../common/enum/deliveryTypes";
 import {PaymentStatus} from "../common/enum/paymentStatus";
 import {PayuI} from "../common/interfaces/PayuI";
 import {PayuRequest} from "../common/requesters/deliveries/PayuRequest";
-import {DeliveryStatusImpl, TrackingDelivery} from "../common/requesters/deliveries/DeliveryStatusImpl";
+import {BillService} from "../services/bill.service";
+import {FieldOptionService} from "../services/fieldOption.service";
 
 @route('/payment')
 export class PaymentController extends BaseController<Payment> {
@@ -24,7 +25,9 @@ export class PaymentController extends BaseController<Payment> {
         private readonly paymentService: PaymentService,
         private readonly orderService: OrderService,
         private readonly orderHistoricService: OrderHistoricService,
-        protected readonly userService: UserService
+        protected readonly userService: UserService,
+        protected readonly billService: BillService,
+        protected readonly fieldOptionService: FieldOptionService
     ){
         super(paymentService);
     };
@@ -93,6 +96,11 @@ export class PaymentController extends BaseController<Payment> {
 
                 //update status for order
                 await this.orderService.updateNextStatus(order, user);
+
+                const settings = await this.fieldOptionService.findByGroup('BILLING_SETTINGS');
+                const settingsArgs = JSON.parse(settings[0].value);
+
+                await this.billService.createBill(order, settingsArgs);
 
                 return res.json({status: 200 } );
             } else {
