@@ -15,5 +15,20 @@ export class FieldOptionService extends BaseService<FieldOption> {
     async findByGroup(group): Promise<FieldOption[]>{
         return await this.fieldOptionRepository.findByObject({ groups: group});
     }
+
+    async isAutoBilling(){
+        try {
+            const billingAuto = await this.findByGroup('BILLING_AUTOMATIC');
+            const isAuto = billingAuto && JSON.parse(billingAuto[0].value);
+
+            console.log('BILLING IS AUTO: ', isAuto == '1' || isAuto == 1);
+
+            return (isAuto == '1' || isAuto == 1);
+        }catch(e){
+            console.log('BILLING IS AUTO: false');
+
+            return false;
+        }
+    }
 }
 

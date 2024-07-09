@@ -60,6 +60,18 @@ export class OrderService extends BaseService<Order> {
         return _order;
     }
 
+    async findWithBill(id: any, addRelations = []){
+        let relations = ['orderDetails','orderDelivery', 'orderDelivery.deliveryLocality', 'deliveryMethod', 'customer', 'user', 'bill', 'customer.municipality', 'customer.state'];
+        if(addRelations && addRelations.length > 0){
+            relations = relations.concat(addRelations);
+        }
+        const _order = await this.find(parseInt(id), relations);
+        const _orderDetails = await this.getDetails(_order);
+        _order.orderDetails = _orderDetails;
+        return _order;
+    }
+
+
     newOrder() : Order{
         const _order = new Order();
         _order.initialize();

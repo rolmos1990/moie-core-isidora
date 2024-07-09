@@ -63,21 +63,23 @@ export class ConditionalQuery {
                         field = query.split("$eq");
                         conditions.add(field[0], Operator.EQUAL, field[1]);
                     } else if (query.includes("$nnull")) {
-                        field = query.split("$nnull");
-                        if (field[0].includes(".")) {
-                            const fieldSubField = field[0].split(".");
-                            conditions.addSub(field[0] + " IS NOT NULL ", {});
+                        field = query.replace("$nnull", "");
+                        if (field.includes(".")) {
+                            const fieldSubField = field.split(".");
+                            conditions.addSub(fieldSubField[0]+"."+fieldSubField[1] + " IS NOT NULL ", {});
                         } else {
                             //compare is not null
-                            conditions.add(field[0], Operator.IS_NOT_NULL, null);
+                            console.log('query', field );
+                            conditions.add(field, Operator.IS_NOT_NULL, null);
                         }
                     } else if (query.includes("$null")) {
                         //compare is null
-                        field = query.split("$null");
-                        if (field[0].includes(".")) {
-                            conditions.addSub(field[0] + " IS NULL ", {});
+                        field = query.replace("$null", "");
+                        if (field.includes(".")) {
+                            const fieldSubField = field.split(".");
+                            conditions.addSub(fieldSubField[0]+"."+fieldSubField[1] + " IS NULL ", {});
                         } else {
-                            conditions.add(field[0], Operator.IS_NULL, null);
+                            conditions.add(field, Operator.IS_NULL, null);
                         }
                     } else if (query.includes("$true")) {
                         //compare is true

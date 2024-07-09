@@ -100,7 +100,11 @@ export class PaymentController extends BaseController<Payment> {
                 const settings = await this.fieldOptionService.findByGroup('BILLING_SETTINGS');
                 const settingsArgs = JSON.parse(settings[0].value);
 
-                await this.billService.createBill(order, settingsArgs);
+                const isAuto = await this.fieldOptionService.isAutoBilling();
+
+                if(isAuto) {
+                    await this.billService.createBill(order, settingsArgs);
+                }
 
                 return res.json({status: 200 } );
             } else {

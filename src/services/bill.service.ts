@@ -99,6 +99,11 @@ export class BillService extends BaseService<Bill> {
         return bill;
     }
 
+    async findBillFromOrder(orderId) : Promise<Bill>{
+        const bill = await this.billRepository.findBy('order', orderId, ['order', 'order.orderDetails', 'order.customer', 'order.orderDelivery', 'billConfig', 'order.customer.state', 'order.customer.municipality', 'creditMemo']);
+        return bill[0];
+    }
+
     async deleteMemoByBill(creditMemo: BillCreditMemo) {
        return this.billCreditMemoRepository
            .createQueryBuilder("o")

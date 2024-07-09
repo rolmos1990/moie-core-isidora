@@ -496,7 +496,7 @@ export class OrderController extends BaseController<Order> {
             const settings = await this.fieldOptionService.findByGroup('BILLING_SETTINGS');
             const settingsArgs = JSON.parse(settings[0].value);
 
-            console.log('settingsArgs: ', settingsArgs);
+            const isAutoBilling = await this.fieldOptionService.isAutoBilling();
 
 
             await Promise.all(orders.map(async order => {
@@ -507,7 +507,11 @@ export class OrderController extends BaseController<Order> {
                 if(isMensajeroChargeOnDelivery || isInterrapidisimoChargeOnDelivery){
                     try {
                         await this.orderService.updateNextStatus(order, user);
-                        await this.billService.createBill(order, settingsArgs);
+
+                        if(isAutoBilling) {
+                            await this.billService.createBill(order, settingsArgs);
+                        }
+
                         itemSuccess.push(order.id);
                     }catch(e){
                         itemFailures.push(order.id);
@@ -515,7 +519,11 @@ export class OrderController extends BaseController<Order> {
                 } else if(order.deliveryMethod.id === INTERRAPIDISIMO && _previousPayments.indexOf(order.orderDelivery.deliveryType)){
                     try {
                         await this.orderService.updateNextStatus(order, user);
-                        await this.billService.createBill(order, settingsArgs);
+
+                        if(isAutoBilling) {
+                            await this.billService.createBill(order, settingsArgs);
+                        }
+
                         itemSuccess.push(order.id);
                     }catch(e){
                         itemFailures.push(order.id);

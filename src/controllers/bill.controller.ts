@@ -120,6 +120,29 @@ export class BillController extends BaseController<Bill> {
         return res.json({status: 200});
     }
 
+    /** Reenviar factura */
+    @route('/sendBillFromOrder/:id')
+    @POST()
+    public async sendBillFromOrder(req: Request, res: Response){
+        const id = req.params.id;
+        const order = await this.orderService.findWithBill(id);
+        let orderWithBill = null;
+        try {
+
+            const settings = await this.fieldOptionService.findByGroup('BILLING_SETTINGS');
+            const settingsArgs = JSON.parse(settings[0].value);
+
+            await this.billService.createBill(order, settingsArgs);
+
+            orderWithBill = await this.orderService.findWithBill(id);
+
+        }catch(e){
+            console.log(e.message);
+            return res.json({status: 400, message: e.message});
+        }
+        return res.json({status: 200, order: orderWithBill});
+    }
+
     @route('/creditMemo/:id')
     @POST()
     public async cancelBill(req: Request, res: Response){
