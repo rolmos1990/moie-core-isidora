@@ -48,6 +48,7 @@ import {OrderTypes} from "../common/enum/orderTypes";
 import {BillService} from "../services/bill.service";
 import {FieldOption} from "../models/FieldOption";
 import {FieldOptionService} from "../services/fieldOption.service";
+import {BillStatus} from "../common/enum/billStatus";
 
 
 @route('/order')
@@ -349,6 +350,72 @@ export class OrderController extends BaseController<Order> {
                     throw new InvalidArgumentException("No se ha podido generar el reporte");
                 }
                 return res.json({status: 200, html: template});
+            }
+        }catch(e){
+            this.handleException(e, res);
+            console.log("error", e);
+        }
+    }
+
+    /**
+     * Obtener facturas para ordenes (masiva)
+     * @param req
+     * @param res
+     */
+    @route('/batch/billRequest')
+    @GET()
+    public async billRequest(req: Request, res: Response) {
+        try {
+            const limitForQueries = 4000; //Limite para una petición
+
+            const query = req.query;
+            const conditional = query.conditional ? query.conditional + "" : null;
+
+            const queryCondition = ConditionalQuery.ConvertIntoConditionalParams(conditional);
+            const operationQuery = new OperationQuery(null, null);
+            let page = new PageQuery(limitForQueries,0,queryCondition, operationQuery);
+
+            page.setRelations(['orderDelivery', 'customer','customer.state','customer.municipality', 'user', 'deliveryMethod', 'orderDetails', 'orderDetails.product','bill']);
+
+            let orders: Array<Order> = await this.orderService.all(page);
+
+            const user = await this.getUser(req);
+
+            //let isImpress = true;
+
+            if(orders.length > 0){
+                orders = orders.filter(item => item.status == OrderStatus.FINISHED && item.bill == null);
+
+                if(orders.length <= 0){
+                    throw new InvalidArgumentException("No se ha encontraron ordenes para facturar");
+                }
+
+                const result = await Promise.all(orders.map(async (order,index, _orders) => {
+
+                    try {
+                        const settings = await this.fieldOptionService.findByGroup('BILLING_SETTINGS');
+                        const settingsArgs = JSON.parse(settings[0].value);
+
+                        await this.billService.createBill(order, settingsArgs);
+
+                    }catch(e){
+                        console.log('error genereando factura para orden..', order.id);
+                    }
+
+                    return {order: order.id};
+                }));
+
+                const save = await this.batchRequestService.createOrUpdate({
+                    body: result,
+                    type: BatchRequestTypes.BILLS,
+                    status: BatchRequestTypesStatus.COMPLETED,
+                    user: UserShortDTO(user)
+                });
+
+                return res.json({status: 200, batch: {...save}});
+
+            } else {
+                return res.json({status: 400, error: "No se han encontrado registros"});
             }
         }catch(e){
             this.handleException(e, res);
