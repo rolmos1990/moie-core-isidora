@@ -60,7 +60,7 @@ export class DeliveryStatusBlueExpress extends BaseRequester {
         const ubicacion = location;
         const estatus = pinchazo['tipoMovimiento']['descripcion'];
 
-        const stopStatus = ['ENTREGADO','DEVOLUCION ENTREGADA'];
+        const stopStatus = ['ENTREGADO','RETIRADO','DEVOLUCION ENTREGADA'];
         const shouldStop = stopStatus.includes(estatus.toUpperCase());
 
         const tracking : TrackingDelivery = {
