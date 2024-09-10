@@ -56,7 +56,7 @@ export class DeliveryStatusBlueExpress extends BaseRequester {
             location  = content["origen"]["comuna"];
         }
 
-        const fecha = content["fechaMacroEstadoActual"];
+        const fecha = pinchazo['tipoMovimiento']['fechaHora'];
         const ubicacion = location;
         const estatus = pinchazo['tipoMovimiento']['descripcion'];
 
