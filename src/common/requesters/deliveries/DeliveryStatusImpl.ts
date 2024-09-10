@@ -4,6 +4,7 @@ import {DeliveryStatusInterrapidisimo} from "./DeliveryStatusInterrapidisimo";
 import {InvalidFileException} from "../../exceptions";
 import {DeliveryStatusServientrega} from "./DeliveryStatusServientrega";
 import {ClientsManagementService} from "../../../services/clientsManagement.service";
+import {DeliveryStatusBlueExpress} from "./DeliveryStatusBlueExpress";
 const axios = require('axios');
 
 
@@ -37,6 +38,10 @@ export class DeliveryStatusImpl extends BaseRequester{
                 this.rest = true;
                 this.caller = new DeliveryStatusInterrapidisimo(this.order);
                 break;
+            case "BLUEEXPRESS":
+                this.rest = true;
+                this.caller = new DeliveryStatusBlueExpress(this.order);
+                break;
             default:
                 throw new InvalidFileException("La orden no puede ser procesada o no se consiguio un tipo asociado");
         }
@@ -65,7 +70,8 @@ export class DeliveryStatusImpl extends BaseRequester{
     async call(): Promise<TrackingDelivery> {
         try {
             if(this.rest) {
-                const response = await axios.get(this.getUrl());
+                const headers = this.getHeaders();
+                const response = await axios.get(this.getUrl(), { headers });
                 const body = response.data;
                 const parse: TrackingDelivery = this.getContext(body);
                 return parse;
