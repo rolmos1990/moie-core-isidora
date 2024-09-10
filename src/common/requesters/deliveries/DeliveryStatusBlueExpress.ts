@@ -47,20 +47,21 @@ export class DeliveryStatusBlueExpress extends BaseRequester {
         let location = "";
 
         if(pinchazos && pinchazos.length > 0){
-            pinchazo = pinchazos[pinchazos.length - 1];
+            pinchazo = pinchazos[0];
         }
 
         if(locations && locations.length > 0){
-            location = (locations[locations.length - 1])["nombreLocalidad"];
+            location = (locations[0])["nombreLocalidad"];
+            location = location['nombreLocalidad'];
         } else {
             location  = content["origen"]["comuna"];
         }
 
-        const fecha = pinchazo['tipoMovimiento']['fechaHora'];
+        const fecha = content["fechaMacroEstadoActual"];
         const ubicacion = location;
         const estatus = pinchazo['tipoMovimiento']['descripcion'];
 
-        const stopStatus = ['ENTREGADO','RETIRADO','DEVOLUCION ENTREGADA'];
+        const stopStatus = ['ENTREGADO','DEVOLUCION ENTREGADA'];
         const shouldStop = stopStatus.includes(estatus.toUpperCase());
 
         const tracking : TrackingDelivery = {
